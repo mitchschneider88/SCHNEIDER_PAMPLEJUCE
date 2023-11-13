@@ -10,7 +10,7 @@ include (PamplejuceVersion)
 # This is the internal name of the project and the name of JUCE's shared code "target"
 # Note: This cannot have spaces (it may be 2023, but you can't have it all!)
 # Worry not, JUCE's PRODUCT_NAME can have spaces (and is DAWs display)
-set(PROJECT_NAME "Pamplejuce")
+set(PROJECT_NAME "halflightinit")
 
 # Worry not, JUCE's PRODUCT_NAME can have spaces (and is what DAWs will display)
 # You can also just have it be the same thing as PROJECT_NAME
@@ -18,17 +18,16 @@ set(PROJECT_NAME "Pamplejuce")
 #   set(PROJECT_NAME "MyPlugin_v${MAJOR_VERSION}")
 # Doing so enables major versions to show up in IDEs and DAWs as separate plugins
 # allowing you to change parameters and behavior without breaking existing user projects
-set(PRODUCT_NAME "Pamplejuce Demo")
+set(PRODUCT_NAME "half light init")
 
 # Change me! Used for the MacOS bundle name and Installers
-set(COMPANY_NAME "Pamplejuce Company")
+set(COMPANY_NAME "half light")
 
 # Change me! Used for the MacOS bundle identifier (and signing)
-set(BUNDLE_ID "com.pamplejuce.pamplejuce")
+set(BUNDLE_ID "com.halflight.halflight")
 
 # Change me! Set the plugin formats you want built
 # Valid choices: AAX Unity VST VST3 AU AUv3 Standalone
-set(FORMATS Standalone AU VST3 AUv3)
 
 # For simplicity, the name of the CMake project is also the name of the target
 project(${PROJECT_NAME} VERSION ${CURRENT_VERSION})
@@ -51,6 +50,10 @@ add_subdirectory(JUCE)
 # This adds the melatonin inspector module
 add_subdirectory (modules/melatonin_inspector)
 
+juce_set_aax_sdk_path(/Users/mitchschneider_/Desktop/Code/Audio\ SDKs/aax-sdk-2-5-0)
+
+set(FORMATS AU VST3 AAX)
+
 # See `docs/CMake API.md` in the JUCE repo for all config options
 juce_add_plugin("${PROJECT_NAME}"
     # Icons for the standalone app
@@ -66,12 +69,12 @@ juce_add_plugin("${PROJECT_NAME}"
     # Change me!
     # A four-character plugin id
     # First character MUST be uppercase for AU formats
-    PLUGIN_MANUFACTURER_CODE Pamp
+    PLUGIN_MANUFACTURER_CODE Half
 
     # Change me!
     # A unique four-character plugin id
     # Note: this must have at least one upper-case character
-    PLUGIN_CODE P001
+    PLUGIN_CODE hL01
     FORMATS "${FORMATS}"
 
     # The name of your final executable
@@ -112,7 +115,7 @@ target_compile_definitions(SharedCode
     JUCE_VST3_CAN_REPLACE_VST2=0
 
     # Uncomment if you are paying for a an Indie/Pro license or releasing under GPLv3
-    # JUCE_DISPLAY_SPLASH_SCREEN=0
+    JUCE_DISPLAY_SPLASH_SCREEN=0
 
     # lets the app known if we're Debug or Release
     CMAKE_BUILD_TYPE="${CMAKE_BUILD_TYPE}"
@@ -131,8 +134,16 @@ target_link_libraries(SharedCode
     INTERFACE
     Assets
     melatonin_inspector
+    juce_audio_basics
+    juce_audio_devices
+    juce_audio_formats
+    juce_audio_plugin_client
     juce_audio_utils
     juce_audio_processors
+    juce_core
+    juce_data_structures
+    juce_events
+    juce_graphics
     juce_dsp
     juce_gui_basics
     juce_gui_extra
@@ -144,13 +155,13 @@ target_link_libraries(SharedCode
 target_link_libraries("${PROJECT_NAME}" PRIVATE SharedCode)
 
 # IPP support, comment out to disable
-include(PamplejuceIPP)
+#include(PamplejuceIPP)
 
 # Everything related to the tests target
-include(Tests)
+#include(Tests)
 
 # A separate target keeps the Tests target fast!
-include(Benchmarks)
+#include(Benchmarks)
 
 # Pass some config to GA (like our PRODUCT_NAME)
-include(GitHubENV)
+#include(GitHubENV)
